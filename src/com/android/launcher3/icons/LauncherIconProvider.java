@@ -18,6 +18,7 @@ package com.android.launcher3.icons;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -70,6 +71,9 @@ public class LauncherIconProvider extends IconProvider {
     public void updateSystemState() {
         super.updateSystemState();
         mSystemState += "," + mThemeManager.getIconState().toUniqueId();
+        // System apps keep their source dir across system updates, so icons that change with an
+        // update (new drawables, resource overlays) would stay cached: tie the cache to the build.
+        mSystemState += "," + Build.TIME;
     }
 
     private Map<String, ThemeData> getThemedIconMap() {
